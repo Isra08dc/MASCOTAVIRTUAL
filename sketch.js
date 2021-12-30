@@ -57,7 +57,10 @@ function readStock(data){
 
 function feedDog(){
   dog.addImage(happyDog);
+  if(food(foodObj.getFoodStock()) <=0){
+  
 
+  }
   //escribe el código aquí para actualizar las existencia de alimento, y la última vez que se alimentó al perro
 }
 
