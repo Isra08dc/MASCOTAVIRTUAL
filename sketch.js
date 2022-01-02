@@ -57,12 +57,18 @@ function readStock(data){
 
 function feedDog(){
   dog.addImage(happyDog);
-  if(food(foodObj.getFoodStock()) <=0){
-  
 
+  if(foodObj.updateFoodStock()<=0){
+  foodObj.updateFoodStock(foodObj.getFoodStock()*0);
+  }else{
+  foodObj.updatefoodStock(foodObj.getFoodStock()-1);
   }
-  //escribe el código aquí para actualizar las existencia de alimento, y la última vez que se alimentó al perro
-}
+  database.ref('/').update({
+    Food:foodObj.getFoodStock(),
+    FeedTime:hour()
+  })
+  }
+  //escribe el código aquí para actualizar las existencia de alimento, y la última vez que se alimentó al perro}
 
 //funcón para agregar alimento al almacén
 function addFoods(){
