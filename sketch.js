@@ -41,7 +41,10 @@ function draw() {
 
   //escribe el código para leer el valor de tiempo de alimentación de la base de datos
   
- 
+  if(lastFed>=12){ text("Última hora en que se alimentó : "+ lastFed%12 + " PM", 350,30); }
+  else if(lastFed==0){ text("Última hora en que se alimentó : 12 AM",350,30); }
+  else
+  { text("Última hora en que se alimentó : "+ lastFed + " AM", 350,30); }
   //escribe el código para mostrar el texto lastFed time aquí
 
  
