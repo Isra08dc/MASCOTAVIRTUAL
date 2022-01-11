@@ -4,7 +4,8 @@ var addFood;
 var foodObj;
 
 //crea aquí las variables feed y lastFed 
-
+var feed;
+var lastFed;
 
 function preload(){
 sadDog=loadImage("Dog.png");
@@ -26,12 +27,12 @@ function setup() {
 
   //crea aquí el boton Alimentar al perro
   addFood = createButton("Agregar alimento");
-  addFood.position(800,95)
+  addFood.position(700,95)
   addFood.mousePressed(addFoods);
 
-  addFood=createButton("Agregar Alimento");
-  addFood.position(800,95);
-  addFood.mousePressed(addFoods);
+  addFood=createButton("Alimenta al perro");
+  addFood.position(900,95);
+  addFood.mousePressed(feedDog);
 
 }
 
@@ -39,15 +40,21 @@ function draw() {
   background(46,139,87);
   foodObj.display();
 
-  //escribe el código para leer el valor de tiempo de alimentación de la base de datos
-  
-  if(lastFed>=12){ text("Última hora en que se alimentó : "+ lastFed%12 + " PM", 350,30); }
-  else if(lastFed==0){ text("Última hora en que se alimentó : 12 AM",350,30); }
-  else
-  { text("Última hora en que se alimentó : "+ lastFed + " AM", 350,30); }
-  //escribe el código para mostrar el texto lastFed time aquí
-
+  fedTime=database.ref('FeedTime');
+  fedTime.on("value",function(data){
+    lastFed=data.val();
+  });
  
+  fill(255,255,254);
+  textSize(15);
+  if(lastFed>=12){
+    text("Última hora en que se alimentó : "+ lastFed%12 + " PM", 100,30);
+   }else if(lastFed==0){
+     text("Última hora en que se alimentó : 12 AM",100,30);
+   }else{
+     text("Última hora en que se alimentó : "+ lastFed + " AM", 100,30);
+   }
+  
   drawSprites();
 }
 
@@ -61,16 +68,17 @@ function readStock(data){
 function feedDog(){
   dog.addImage(happyDog);
 
-  if(foodObj.updateFoodStock()<=0){
-  foodObj.updateFoodStock(foodObj.getFoodStock()*0);
+  if(foodObj.getFoodStock()<= 0){
+    foodObj.updateFoodStock(foodObj.getFoodStock()*0);
   }else{
-  foodObj.updatefoodStock(foodObj.getFoodStock()-1);
+    foodObj.updateFoodStock(foodObj.getFoodStock()-1);
   }
+  
   database.ref('/').update({
     Food:foodObj.getFoodStock(),
     FeedTime:hour()
   })
-  }
+}
   //escribe el código aquí para actualizar las existencia de alimento, y la última vez que se alimentó al perro}
 
 //funcón para agregar alimento al almacén
